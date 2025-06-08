@@ -1,0 +1,125 @@
+📝 Markdown File Content (iam_notes.md)
+markdown
+Copy
+Edit
+# AWS Identity and Access Management (IAM) & CLI Notes
+
+## 📌 Key IAM Principles
+- **Grant least privilege:** Give users only the permissions they need — _never more_.
+- **Avoid using the root account** for everyday tasks.
+
+---
+
+## 👤 Creating an IAM User
+
+1. **Create a user** (e.g., for an admin).
+2. **Add the user to a group** (e.g., `Admin`).
+3. **Set an account alias** (e.g., `mycompany-account`).
+4. **Share login info**:
+   - IAM Sign-in URL:  
+     `https://<account-alias>.signin.aws.amazon.com/console`
+   - Share **username** and **password** created.
+
+---
+
+## 🛡️ IAM Policy Structure
+
+A policy is a JSON document with the following structure:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Id": "PolicyID123",
+  "Statement": [
+    {
+      "Sid": "UniqueStatementID",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::123456789012:user/Username"
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::example-bucket/*"
+      ],
+      "Condition": {
+        "IpAddress": {
+          "aws:SourceIp": "192.0.2.0/24"
+        }
+      }
+    }
+  ]
+}
+🧩 Elements of a Policy Statement
+Sid: Statement ID (optional)
+
+Effect: Allow or Deny
+
+Principal: Who this applies to
+
+Action: AWS operations allowed or denied
+
+Resource: What it applies to
+
+Condition: When/under what circumstances
+
+✅ Example AWS Managed Policy
+IAMReadOnlyAccess: Grants read-only access to IAM.
+
+🔐 IAM Password Policy & MFA
+Enforce strong password policies.
+
+Enable Multi-Factor Authentication (MFA):
+
+Something you know (password) + something you have (device).
+
+Even if password is compromised, account is secure.
+
+💻 AWS CLI (Command Line Interface)
+Overview
+Tool to interact with AWS via command line.
+
+Script automation possible.
+
+Open-source: AWS CLI GitHub
+
+🔧 Setup Instructions
+Go to IAM > Users > Security Credentials
+
+Create Access Keys
+
+Run the CLI config:
+
+bash
+Copy
+Edit
+aws configure
+Enter:
+
+Access Key ID
+
+Secret Access Key
+
+Region: ap-south-1
+
+🧰 AWS SDK (Software Development Kit)
+Programmatic access to AWS from within apps.
+
+Language-specific libraries (JavaScript, Python, Go, Java, .NET, etc.)
+
+🐚 AWS CloudShell
+Browser-based shell with AWS CLI pre-installed.
+
+⚠️ Not available in all regions — check availability.
+
+🎭 IAM Roles for AWS Services
+Some services (like EC2, Lambda) require permissions to act on your behalf. Use IAM Roles.
+
+Common Roles:
+EC2 Instance Role
+
+Lambda Execution Role
+
+CloudFormation Role
